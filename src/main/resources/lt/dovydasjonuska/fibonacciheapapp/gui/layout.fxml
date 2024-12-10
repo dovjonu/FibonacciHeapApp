@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.canvas.Canvas?>
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="lt.dovydasjonuska.fibonacciheapapp.gui.HeapGuiController">
+
+    <VBox VBox.vgrow="ALWAYS">
+        <!-- Center graphical view -->
+        <VBox spacing="10" prefWidth="200" BorderPane.alignment="TOP_LEFT">
+            <Canvas fx:id="canvas" width="500" height="500" />
+        </VBox>
+
+        <!-- Bottom output logs -->
+        <VBox spacing="100" prefWidth="200" BorderPane.alignment="CENTER_LEFT">
+            <TextArea fx:id="outputLogs" prefHeight="100" editable="false" style="-fx-background-color: #222222; -fx-text-fill: white;" minWidth="300" />
+        </VBox>
+
+        <!-- Right panel for buttons -->
+        <VBox spacing="10" prefWidth="200" BorderPane.alignment="TOP_RIGHT">
+            <Button fx:id="insertButton" text="Insert" onAction="#handleInsert" minWidth="150" />
+            <Button fx:id="extractMinButton" text="Extract Min" onAction="#handleExtractMin" minWidth="150" />
+        </VBox>
+    </VBox>
+</BorderPane>

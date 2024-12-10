@@ -1,0 +1,22 @@
+.root {
+    -fx-background-color: #2b2b2b; /* Dark background */
+    -fx-text-fill: white; /* Light text */
+}
+
+.button {
+    -fx-background-color: #555555; /* Dark button */
+    -fx-text-fill: white; /* Light text */
+    -fx-border-color: #888888;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #777777;
+}
+
+.text-area {
+    -fx-control-inner-background: #333333;
+    -fx-text-fill: white;
+    -fx-border-color: #555555;
+}
