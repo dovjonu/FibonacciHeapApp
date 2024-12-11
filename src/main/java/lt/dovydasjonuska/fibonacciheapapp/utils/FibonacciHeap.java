@@ -54,7 +54,7 @@ public class FibonacciHeap<T extends Comparable<T>> {
         return min != null ? min.key : null;
     }
 
-    public T removeMin() {
+    public T extractMin() {
         if (min == null) return null;
         Node z = min;
         if (z.child != null) {
@@ -140,7 +140,15 @@ public class FibonacciHeap<T extends Comparable<T>> {
         y.childCut = false;
     }
 
-    public void decreaseKey(Node x, T newKey) {
+    public void decreaseKey(T key, T newKey) {
+        Node node = findNode(min, key);
+        if (node == null) {
+            throw new IllegalArgumentException("Node with key " + key + " not found");
+        }
+        decreaseKey(node, newKey);
+    }
+
+    private void decreaseKey(Node x, T newKey) {
         if (newKey.compareTo(x.key) > 0) {
             throw new IllegalArgumentException("New key is greater than current key");
         }
@@ -230,6 +238,26 @@ public class FibonacciHeap<T extends Comparable<T>> {
         return size;
     }
 
+    private Node findNode(Node node, T key) {
+        if (node == null) return null;
+        Node current = node;
+        do {
+            if (current.key.equals(key)) {
+                return current;
+            }
+            if(current.child != null){
+                Node found = findNode(current.child, key);
+                if(found != null){
+                    return found;
+                }
+            }
+            current = current.right;
+        } while (current != node);
+
+        return null;
+    }
+
+    /// Drawing methods and classes:
 
     // Inner class to store drawing information
     public class DrawingInfo {

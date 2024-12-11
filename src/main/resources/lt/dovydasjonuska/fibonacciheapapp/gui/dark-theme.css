@@ -15,7 +15,7 @@
     -fx-background-color: #777777;
 }
 
-.text-area {
+.text-area, .text-field, .label {
     -fx-control-inner-background: #333333;
     -fx-text-fill: white;
     -fx-border-color: #555555;

@@ -1,5 +1,6 @@
 package lt.dovydasjonuska.fibonacciheapapp.gui;
 
+import javafx.scene.input.MouseEvent;
 import lt.dovydasjonuska.fibonacciheapapp.utils.FibonacciHeap;
 
 import javafx.fxml.FXML;
@@ -32,11 +33,13 @@ public class HeapGuiController {
     private Button insertButton, extractMinButton;
 
     @FXML
-    TextField generateSizeField;
+    private TextField generateSizeField, key1, key2;
 
     @FXML
     public void initialize() {
         log("Application started...");
+
+        generateSizeField.setText("15");
 
         // Proportional element sizing
         canvas.widthProperty().bind(root.widthProperty().multiply(0.8));
@@ -47,8 +50,13 @@ public class HeapGuiController {
     }
 
     @FXML
+    public void handleCanvasClicked() {
+        log("Canvas clicked.");
+    }
+
+    @FXML
     public void handleGenerateRandomHeap() {
-        log("Generate Random Heap button clicked.");
+        log("Generated random heap with size: " + generateSizeField.getText());
         heap = new FibonacciHeap<>();
         int size = Integer.parseInt(generateSizeField.getText());
         for (int i = 0; i < size; i++) {
@@ -59,18 +67,57 @@ public class HeapGuiController {
 
     @FXML
     public void handleInsert() {
-        log("Insert button clicked.");
         int random = (int) (Math.random() * 100);
+        log("Inserted: " + random);
         heap.insert(random);
 
         drawHeap();
     }
 
     @FXML
+    public void handleGetMin() {
+        log("Min: " + heap.findMin().toString());
+
+        drawHeap();
+    }
+
+    @FXML
     public void handleExtractMin() {
-        log("Extract Min button clicked.");
+        log("Min Extracted: " + heap.extractMin().toString());
+
+        drawHeap();
+    }
+
+    @FXML
+    public void handleConsolidate() {
+        log("Consolidated.");
 
         heap.consolidate();
+        drawHeap();
+    }
+
+    @FXML
+    public void handleUnion() {
+        int size = Integer.parseInt(generateSizeField.getText());
+        FibonacciHeap<Integer> heap2 = new FibonacciHeap();
+        for (int i = 0; i < size; i++) {
+            heap2.insert((int) (Math.random() * 100));
+        }
+        heap2.consolidate();
+
+        heap.union(heap2);
+        log("Unionised with a new random consolidated heap of size: " + size);
+        drawHeap();
+    }
+
+    @FXML
+    public void handleDecreaseKey() {
+        int key1int = Integer.parseInt(this.key1.getText());
+        int key2int = Integer.parseInt(this.key2.getText());
+
+        heap.decreaseKey(key1int, key2int);
+
+        log("Node with key: " + key1int + " decreased to: " + key2int);
         drawHeap();
     }
 
@@ -112,6 +159,10 @@ public class HeapGuiController {
 
         gc.setFill(Color.WHITE);
         gc.fillText(text, x + 5, y + 14); // Draw the text inside the node
+
+        gc.getCanvas().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            log("Node clicked: " + text);
+        });
     }
 
 }

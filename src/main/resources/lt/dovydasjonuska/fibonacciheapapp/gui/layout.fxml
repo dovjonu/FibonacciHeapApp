@@ -16,12 +16,20 @@
     <top>
         <HBox spacing="10" fx:id="topSection">
             <!-- Canvas on the left -->
-            <Canvas fx:id="canvas" />
+            <Canvas fx:id="canvas" onMouseClicked="#handleCanvasClicked" />
             <!-- VBox for buttons on the right -->
             <VBox spacing="10" alignment="TOP_CENTER">
-                <Button fx:id="generateRandomHeapButton" text="Generate Random Heap" onAction="#handleGenerateRandomHeap" minWidth="150" />
-                <Button fx:id="insertButton" text="Insert" onAction="#handleInsert" minWidth="150" />
-                <Button fx:id="extractMinButton" text="Extract Min" onAction="#handleExtractMin" minWidth="150" />
+                <Button fx:id="generateRandomHeapButton" text="Generate Random Heap" onAction="#handleGenerateRandomHeap" minWidth="200" />
+                <Button fx:id="insertButton" text="Insert" onAction="#handleInsert" minWidth="200" />
+                <Button fx:id="minimumButton" text="Get Min" onAction="#handleGetMin" minWidth="200" />
+                <Button fx:id="extractMinButton" text="Extract Min" onAction="#handleExtractMin" minWidth="200" />
+                <Button fx:id="consolidateButton" text="Consolidate" onAction="#handleConsolidate" minWidth="200" />
+                <Button fx:id="unionButton" text="Union With Random Heap" onAction="#handleUnion" minWidth="200" />
+                <Button fx:id="decreaseKeyButton" text="Decrease key" onAction="#handleDecreaseKey" minWidth="200" />
+                <GridPane xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
+                    <TextField fx:id="key1" promptText="Key 1" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <TextField fx:id="key2" promptText="Key 2" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                </GridPane>
 
                 <GridPane xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
                     <!-- Header Row -->
@@ -36,7 +44,6 @@
                     <Label text="Value:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
                     <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" />
                 </GridPane>
-
             </VBox>
         </HBox>
     </top>
