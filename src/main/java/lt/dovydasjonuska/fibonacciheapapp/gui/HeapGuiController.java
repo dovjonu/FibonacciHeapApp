@@ -3,6 +3,8 @@ package lt.dovydasjonuska.fibonacciheapapp.gui;
 import javafx.scene.input.MouseEvent;
 import lt.dovydasjonuska.fibonacciheapapp.utils.FibonacciHeap;
 
+import java.util.Random;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -16,6 +18,8 @@ import javafx.scene.canvas.*;
 public class HeapGuiController {
 
     private FibonacciHeap<Integer> heap = new FibonacciHeap<>();
+
+    private int seed = 123456;
 
     @FXML
     private BorderPane root;
@@ -33,7 +37,7 @@ public class HeapGuiController {
     private Button insertButton, extractMinButton;
 
     @FXML
-    private TextField generateSizeField, key1, key2;
+    private TextField generateSizeField, key1, key2, deleteKeyField;
 
     @FXML
     public void initialize() {
@@ -57,10 +61,11 @@ public class HeapGuiController {
     @FXML
     public void handleGenerateRandomHeap() {
         log("Generated random heap with size: " + generateSizeField.getText());
+        Random generator = new Random(seed);
         heap = new FibonacciHeap<>();
         int size = Integer.parseInt(generateSizeField.getText());
         for (int i = 0; i < size; i++) {
-            heap.insert((int) (Math.random() * 100));
+            heap.insert(generator.nextInt(100));
         }
         drawHeap();
     }
@@ -118,6 +123,15 @@ public class HeapGuiController {
         heap.decreaseKey(key1int, key2int);
 
         log("Node with key: " + key1int + " decreased to: " + key2int);
+        drawHeap();
+    }
+
+    @FXML
+    public void handleDelete() {
+        int key = Integer.parseInt(this.deleteKeyField.getText());
+        heap.remove(key);
+
+        log("Node with key: " + key + " deleted.");
         drawHeap();
     }
 

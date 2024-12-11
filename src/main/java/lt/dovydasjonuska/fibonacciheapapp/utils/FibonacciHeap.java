@@ -163,6 +163,33 @@ public class FibonacciHeap<T extends Comparable<T>> {
         }
     }
 
+    public void remove(T key) {
+        Node node = findNode(min, key);
+        if (node == null) {
+            throw new IllegalArgumentException("Node with key " + key + " not found");
+        }
+        remove(node, node.parent);
+    }
+
+    private void remove(Node x, Node y) {
+        // Remove x from y's child list
+        if (x.right == x) {
+            y.child = null;
+        } else {
+            x.right.left = x.left;
+            x.left.right = x.right;
+            if (y.child == x) {
+                y.child = x.right;
+            }
+        }
+        x.right = x;
+        x.left = x;
+        x.parent = null;
+        if(x.child != null)
+            link(x.child, y);
+        y.degree--;
+    }
+
     private void cut(Node x, Node y) {
         // Remove x from y's child list
         if (x.right == x) {
