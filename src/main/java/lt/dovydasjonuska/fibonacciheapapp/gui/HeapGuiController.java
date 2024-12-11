@@ -5,6 +5,7 @@ import lt.dovydasjonuska.fibonacciheapapp.utils.FibonacciHeap;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -31,6 +32,9 @@ public class HeapGuiController {
     private Button insertButton, extractMinButton;
 
     @FXML
+    TextField generateSizeField;
+
+    @FXML
     public void initialize() {
         log("Application started...");
 
@@ -40,6 +44,17 @@ public class HeapGuiController {
         outputLogs.prefWidthProperty().bind(root.widthProperty());
         outputLogs.prefHeightProperty().bind(root.heightProperty().multiply(0.3));
         topSection.prefWidthProperty().bind(root.widthProperty().multiply(0.2));
+    }
+
+    @FXML
+    public void handleGenerateRandomHeap() {
+        log("Generate Random Heap button clicked.");
+        heap = new FibonacciHeap<>();
+        int size = Integer.parseInt(generateSizeField.getText());
+        for (int i = 0; i < size; i++) {
+            heap.insert((int) (Math.random() * 100));
+        }
+        drawHeap();
     }
 
     @FXML

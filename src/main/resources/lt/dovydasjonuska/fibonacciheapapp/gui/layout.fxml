@@ -3,10 +3,13 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
 
+<?import javafx.scene.control.TextField?>
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="lt.dovydasjonuska.fibonacciheapapp.gui.HeapGuiController" fx:id="root">
 
     <!-- Top Section: Canvas and Buttons -->
@@ -15,9 +18,25 @@
             <!-- Canvas on the left -->
             <Canvas fx:id="canvas" />
             <!-- VBox for buttons on the right -->
-            <VBox spacing="10" alignment="CENTER">
+            <VBox spacing="10" alignment="TOP_CENTER">
+                <Button fx:id="generateRandomHeapButton" text="Generate Random Heap" onAction="#handleGenerateRandomHeap" minWidth="150" />
                 <Button fx:id="insertButton" text="Insert" onAction="#handleInsert" minWidth="150" />
                 <Button fx:id="extractMinButton" text="Extract Min" onAction="#handleExtractMin" minWidth="150" />
+
+                <GridPane xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
+                    <!-- Header Row -->
+                    <Label text="Generate size:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <TextField fx:id="generateSizeField" promptText="Value" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                    <!-- Row 1 -->
+                    <Label text="Something else:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                    <TextField GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                    <!-- Row 2 -->
+                    <Label text="Value:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                    <TextField GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                </GridPane>
+
             </VBox>
         </HBox>
     </top>
