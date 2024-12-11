@@ -5,6 +5,8 @@ import lt.dovydasjonuska.fibonacciheapapp.utils.FibonacciHeap;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 
 import javafx.scene.paint.*;
 import javafx.scene.canvas.*;
@@ -14,18 +16,30 @@ public class HeapGuiController {
     private FibonacciHeap<Integer> heap = new FibonacciHeap<>();
 
     @FXML
-    private Canvas canvas; // Canvas for drawing
+    private BorderPane root;
 
     @FXML
-    private TextArea outputLogs; // Bottom text area for logs
+    private Canvas canvas;
 
     @FXML
-    private Button insertButton, extractMinButton; // Example buttons
+    private TextArea outputLogs;
+
+    @FXML
+    private HBox topSection;
+
+    @FXML
+    private Button insertButton, extractMinButton;
 
     @FXML
     public void initialize() {
         log("Application started...");
 
+        // Proportional element sizing
+        canvas.widthProperty().bind(root.widthProperty().multiply(0.8));
+        canvas.heightProperty().bind(root.heightProperty().multiply(0.7));
+        outputLogs.prefWidthProperty().bind(root.widthProperty());
+        outputLogs.prefHeightProperty().bind(root.heightProperty().multiply(0.3));
+        topSection.prefWidthProperty().bind(root.widthProperty().multiply(0.2));
     }
 
     @FXML
@@ -51,71 +65,22 @@ public class HeapGuiController {
 
     private void drawHeap() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        if (heap.min == null) {
-            log("Heap is empty. Nothing to draw.");
-            return;
+        // Get drawing information from the heap
+        FibonacciHeap<Integer>.DrawingInfo drawingInfo = heap.computeDrawingCoordinates();
+
+        // Draw nodes
+        for (FibonacciHeap.NodeCoordinates node : drawingInfo.nodes) {
+            drawNode(gc, node.x, node.y, node.key.toString());
         }
 
-        // Draw all nodes in the root list
-        drawSubtree(heap.min, 5, 5, gc);
+        // Draw lines
+        gc.setStroke(Color.GRAY);
+        for (FibonacciHeap.LineCoordinates line : drawingInfo.lines) {
+            gc.strokeLine(line.startX, line.startY, line.endX, line.endY);
+        }
     }
-
-    /**
-     * Recursively draws a subtree of the Fibonacci heap.
-     * @param node The starting node of the subtree.
-     * @param x The x-coordinate of the current node.
-     * @param y The y-coordinate of the current node.
-     * @param gc The GraphicsContext to draw on.
-     */
-    private int drawSubtree(FibonacciHeap<Integer>.Node node, int x, int y, GraphicsContext gc) {
-        if (node == null) return 0;
-        System.out.println("Drawing subtree for node: " + node.key);
-
-
-        int offset = 0; // Track the horizontal offset for siblings
-        FibonacciHeap<Integer>.Node current = node;
-        boolean isFirstNode = true;
-
-        do {
-            System.out.println("Drawing node: " + current.key);
-            int currentX = x + offset;
-
-            // Draw the current node
-            drawNode(gc, currentX, y, current.key.toString());
-
-            // Draw line to the parent (centered beneath parent)
-            if (current.parent != null) {
-                gc.setStroke(Color.GRAY);
-                gc.strokeLine(currentX + 10, y, x + 10, y - 50); // Centered connection
-            }
-
-            // Draw line to the left sibling if not the first node
-            if (!isFirstNode) {
-                gc.setStroke(Color.GRAY);
-                gc.strokeLine(currentX - 50 + 10, y + 10, currentX + 10, y + 10); // Horizontal sibling connection
-            }
-
-
-
-            // Draw children recursively
-            if (current.child != null) {
-                if(!isFirstNode)
-                    offset += drawSubtree(current.child, currentX, y + 50, gc); // Child centered directly beneath
-                else
-                    drawSubtree(current.child, currentX, y + 50, gc); // Child centered directly beneath
-            }
-
-            isFirstNode = false;
-
-            offset += 50; // Add offset for siblings
-            current = current.right;
-        } while (current != node); // Loop through all siblings
-
-        return offset;
-    }
-
 
     /**
      * Draws a single node on the canvas.

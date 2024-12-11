@@ -2,12 +2,13 @@ package lt.dovydasjonuska.fibonacciheapapp.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class FibonacciHeap<T extends Comparable<T>> {
-    public Node min;
+    private Node min;
     private int size;
 
-    public class Node {
+    private class Node {
         public T key;
         public int degree;
         public boolean childCut;
@@ -227,5 +228,82 @@ public class FibonacciHeap<T extends Comparable<T>> {
 
     public int size() {
         return size;
+    }
+
+
+    // Inner class to store drawing information
+    public class DrawingInfo {
+        public final List<NodeCoordinates> nodes = new ArrayList<>();
+        public final List<LineCoordinates> lines = new ArrayList<>();
+    }
+
+    public class NodeCoordinates {
+        public final T key;
+        public final int x;
+        public final int y;
+
+        public NodeCoordinates(T key, int x, int y) {
+            this.key = key;
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public class LineCoordinates {
+        public final int startX;
+        public final int startY;
+        public final int endX;
+        public final int endY;
+
+        public LineCoordinates(int startX, int startY, int endX, int endY) {
+            this.startX = startX;
+            this.startY = startY;
+            this.endX = endX;
+            this.endY = endY;
+        }
+    }
+
+    public DrawingInfo computeDrawingCoordinates() {
+        DrawingInfo drawingInfo = new DrawingInfo();
+        if (min == null) return drawingInfo;
+
+        computeSubtreeCoordinates(min, 5, 5, drawingInfo, null);
+        return drawingInfo;
+    }
+
+    private int computeSubtreeCoordinates(Node node, int x, int y, DrawingInfo drawingInfo, Node parent) {
+        if (node == null) return 0;
+
+        int totalWidth = 0;
+        int currentX = x;
+        int maxHeight = 50; // Spacing between parent and children
+
+        Node current = node;
+        do {
+            // Compute child subtree width
+            int childWidth = 0;
+            if (current.child != null) {
+                childWidth = computeSubtreeCoordinates(current.child, currentX, y + maxHeight, drawingInfo, current);
+            }
+
+            // Use max(childWidth, 50) for node spacing
+            int subtreeWidth = Math.max(childWidth, 50);
+            totalWidth += subtreeWidth;
+
+            // Store current node position
+            drawingInfo.nodes.add(new NodeCoordinates(current.key, currentX, y));
+
+            // Store line to parent
+            if (parent != null) {
+                drawingInfo.lines.add(new LineCoordinates(currentX + 10, y, x + 10, y - maxHeight));
+            }
+
+            // Update current X for the next sibling
+            currentX += subtreeWidth;
+            current = current.right;
+
+        } while (current != node);
+
+        return totalWidth;
     }
 }
