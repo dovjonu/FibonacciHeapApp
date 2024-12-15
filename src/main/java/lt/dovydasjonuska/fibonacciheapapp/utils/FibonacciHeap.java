@@ -168,7 +168,9 @@ public class FibonacciHeap<T extends Comparable<T>> {
         if (node == null) {
             throw new IllegalArgumentException("Node with key " + key + " not found");
         }
-        remove(node, node.parent);
+        if(node.parent != null) {
+            remove(node, node.parent);
+        }
     }
 
     private void remove(Node x, Node y) {
