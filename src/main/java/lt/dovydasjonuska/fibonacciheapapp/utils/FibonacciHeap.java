@@ -274,7 +274,7 @@ public class FibonacciHeap<T extends Comparable<T>> {
             if (current.key.equals(key)) {
                 return current;
             }
-            if(current.child != null){
+            if(current.child != null && current.key.compareTo(key) < 0){
                 Node found = findNode(current.child, key);
                 if(found != null){
                     return found;
